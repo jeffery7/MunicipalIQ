@@ -1,0 +1,16 @@
+openai
+requests
+termcolor
+beautifulsoup4
+yt-dlp
+youtube-transcript-api
+openai-whisper
+python-docx
+pypdf
+pdf2image
+pytesseract
+selenium
+pytest
+pytest-cov
+wemake-python-styleguide
+flake8

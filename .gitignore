@@ -51,6 +51,9 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Flake8 reports
+flake8-report/
+
 # Translations
 *.mo
 *.pot
@@ -216,3 +219,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local meeting data cache (recordings, PDFs, transcripts, generated drafts)
+data/
