@@ -37,6 +37,9 @@ step:
   "on-request"` and `sandbox_mode = "workspace-write"`. Each collaborator
   must mark this project as **trusted** in their own Codex CLI for the
   project config to take effect.
+- **Gemini CLI**: `.gemini/settings.json` lists the same commands under
+  `tools.allowed` (e.g. `run_shell_command(pytest)`) so they run without a
+  confirmation prompt.
 
 Commands with real side effects — `git push`, `archive --recordings`
 (downloads large files), `generate` (calls the Claude API) — are
