@@ -160,11 +160,11 @@ data/
 }
 ```
 
-### MGL §22 required elements
+### [MGL §22](https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIII/Chapter30A/Section22) required elements
 
 Every generated minutes document must include: body name, date, time, location; members present/absent; summary of discussion per agenda item; all decisions and actions; all votes by roll call.  If they do not, note that in the meeting record.
 
-### MGL §23 required elements
+### [MGL §23](https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIII/Chapter30A/Section23) required elements
 
 Governs executive (closed) sessions. Key requirements:
 
