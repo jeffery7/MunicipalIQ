@@ -220,6 +220,9 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+# VS Code workspace
+*.code-workspace
+
 # Local meeting data cache (recordings, PDFs, transcripts, generated drafts)
 data/
 zzz-not-committed/
