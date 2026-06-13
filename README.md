@@ -24,7 +24,9 @@ Select Board**, but is designed to be adaptable to other Massachusetts towns.
 - **Compares** minutes availability between the official posting site and the
   town website to flag gaps.
 
-## Quick start
+## Quick start (macOS / Linux)
+
+> Windows users: see [Windows Setup](#windows-setup) below instead.
 
 ```bash
 pip install -r requirements.txt
@@ -36,6 +38,129 @@ python -m towncommoniq list       # see what's known
 python -m towncommoniq archive --all
 python -m towncommoniq generate --all
 ```
+
+## Windows Setup
+
+A step-by-step guide for getting the full pipeline running on Windows,
+including the browser-based scraper, transcription, and OCR. Commands below
+are for **PowerShell** (Start menu → "PowerShell").
+
+### 1. Install prerequisites
+
+Install these first, in any order:
+
+| Tool | Why it's needed | Get it from |
+|---|---|---|
+| Git for Windows | Clone and update the code | https://git-scm.com/download/win |
+| Python 3.11+ | Runs the project | https://www.python.org/downloads/ — **check "Add python.exe to PATH"** on the first install screen |
+| Mozilla Firefox | `sync-town` drives a real browser via Selenium | https://www.mozilla.org/firefox/ |
+| Tesseract OCR | Reads text from scanned PDF minutes | https://github.com/UB-Mannheim/tesseract/wiki (Windows installer) |
+
+Selenium automatically downloads the matching `geckodriver` the first time it
+runs — no manual driver setup needed, just install Firefox.
+
+Two more tools need to be downloaded as zip files and added to your PATH
+manually:
+
+**FFmpeg** (needed by yt-dlp and Whisper for audio):
+1. Download a build from https://www.gyan.dev/ffmpeg/builds/ (the
+   "release essentials" zip).
+2. Extract it to a permanent location, e.g. `C:\ffmpeg`.
+3. Add `C:\ffmpeg\bin` to your PATH.
+
+**Poppler** (needed by pdf2image for OCR):
+1. Download the latest release from
+   https://github.com/oschwartz10612/poppler-windows/releases (zip
+   containing a `Library\bin` folder).
+2. Extract it to a permanent location, e.g. `C:\poppler`.
+3. Add `C:\poppler\Library\bin` to your PATH.
+
+**Editing your PATH:**
+1. Press Win, type "environment variables", open "Edit environment
+   variables for your account".
+2. Under "User variables", select `Path` → Edit → New, and add each folder
+   (also add Tesseract's install folder, usually
+   `C:\Program Files\Tesseract-OCR`, if its installer didn't do so already).
+3. Click OK on all dialogs, then **close and reopen PowerShell** so the
+   change takes effect.
+
+### 2. Get the code
+
+```powershell
+git clone https://github.com/jeffery7/TownCommonIQ.git
+cd TownCommonIQ
+```
+
+If prompted to sign in, a browser window will open — log in with your GitHub
+account and approve.
+
+### 3. Create a virtual environment and install dependencies
+
+A virtual environment keeps this project's Python packages separate from
+everything else on your machine.
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+If PowerShell refuses to run the activation script ("running scripts is
+disabled on this system"), run this once and try again:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+You'll need to run `.venv\Scripts\Activate.ps1` again every time you open a
+new terminal for this project — your prompt will start with `(.venv)` when
+it's active.
+
+### 4. Set your environment variables
+
+Get your own key from https://console.anthropic.com/ — each person should
+use their own API key, not a shared one.
+
+For the current terminal session only:
+
+```powershell
+$env:ANTHROPIC_API_KEY = "your_key_here"
+```
+
+To set it permanently (so new terminals pick it up automatically):
+
+```powershell
+setx ANTHROPIC_API_KEY "your_key_here"
+```
+
+`TOWNCOMMONIQ_TOWN` defaults to `Hardwick`, so you only need to set it if
+working on a different town.
+
+### 5. Run the CLI
+
+With the virtual environment active, the commands are the same as on
+macOS/Linux — see the full reference in [AGENTS.md](AGENTS.md):
+
+```powershell
+python -m towncommoniq sync
+python -m towncommoniq list
+python -m towncommoniq archive --all
+python -m towncommoniq generate --all
+```
+
+### Troubleshooting
+
+- **`python` / `git` not recognized** — close and reopen PowerShell so it
+  picks up PATH changes, or reinstall with "Add to PATH" checked.
+- **`tesseract is not installed or it's not in your PATH`** — add
+  `C:\Program Files\Tesseract-OCR` to PATH and reopen PowerShell.
+- **OCR/poppler errors** (e.g. `Unable to get page count`) — confirm
+  `...\poppler\Library\bin` is on PATH.
+- **`ffmpeg not found`** during `generate` or transcription — confirm
+  `C:\ffmpeg\bin` is on PATH.
+- **`sync-town` seems to hang** — try `python -m towncommoniq sync-town
+  --no-headless` to watch the Firefox window and see if a Cloudflare
+  challenge needs solving manually.
 
 ## Documentation
 
